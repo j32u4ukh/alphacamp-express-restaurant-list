@@ -22,7 +22,9 @@ Alphacamp 【指標作業】打造餐廳清單
 
 ## 環境初始化
 
-### 取德專案
+### 取得專案
+
+透過 HTTPS 取得專案
 
 ```
 $ git clone https://github.com/j32u4ukh/alphacamp-express-restaurant-list.git

@@ -1,0 +1,17 @@
+{
+  "name": "alphacamp-express-restaurant-list",
+  "version": "1.0.0",
+  "description": "Alphacamp 【指標作業】打造餐廳清單",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

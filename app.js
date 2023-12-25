@@ -24,7 +24,7 @@ app.get("/search", (req, res) => {
     results = restaurants;
   } else {
     const key = keyword.toLowerCase();
-    results = results.filter((result) =>
+    results = restaurants.filter((result) =>
       Object.values(result).some((r) => {
         if (typeof r === "string") {
           return r.toLowerCase().includes(key);
@@ -36,9 +36,9 @@ app.get("/search", (req, res) => {
   res.render("index", { restaurants: results, keyword: keyword });
 });
 
-app.get("/restaurant/:id", (req, res) => {
+app.get("/restaurants/:id", (req, res) => {
   const id = Number(req.params.id);
-  const restaurant = restaurants.find((m) => m.id === id);
+  const restaurant = restaurants.find((r) => r.id === id);
   res.render("show", { restaurant });
 });
 

@@ -34,7 +34,8 @@
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
       <div class="row row-cols-sm-3">
-         {{#each restaurants as |restaurant|}}
+        {{#if restaurants}}
+          {{#each restaurants as |restaurant|}}
           <a href="/restaurants/{{restaurant.id}}" class="text-secondary">
             <div class="card mb-3">
               <img class="card-img-top" src="{{restaurant.image}}" alt="{{restaurant.name}}">
@@ -49,6 +50,9 @@
             </div>
           </a>
           {{/each}}
+        {{else}}
+          <p>No found results for keyword: {{keyword}}</p>
+        {{/if}}
       </div>
     </div>
   </div>

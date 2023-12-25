@@ -1,4 +1,5 @@
 # alphacamp-express-restaurant-list
+
 Alphacamp 【指標作業】打造餐廳清單
 
 ## 「餐廳清單」的基本功能
@@ -21,8 +22,23 @@ Alphacamp 【指標作業】打造餐廳清單
 
 ## 環境初始化
 
+### 取德專案
+
+```
+$ git clone https://github.com/j32u4ukh/alphacamp-express-restaurant-list.git
+```
+
 ### 安裝 npm 套件
 
 ```
+$ cd alphacamp-express-restaurant-list
 $ npm install
+```
+
+## 運行專案
+
+`dev` 使用 nodemon 來執行專案，修改程式碼之後無須重啟程式，重新整理網頁即可。
+
+```
+$ npm run dev
 ```

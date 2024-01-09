@@ -1,0 +1,41 @@
+<form action="/restaurants/add" method="POST">
+    <div>
+        <label>Name: </label>
+        <input type="text" placeholder="restaurant's name" name="name">
+    </div>    
+    <div>
+        <label>English name: </label>
+        <input type="text" placeholder="restaurant's English name" name="name_en">   
+    </div>
+    <div>
+        <label>Category: </label>
+        <input type="text" placeholder="restaurant's category" name="category">
+    </div>
+    <div>
+        <label>Image url: </label>
+        <input type="text" placeholder="restaurant's image url" name="image">
+    </div>
+    <div>
+        <label>Location: </label>
+        <input type="text" placeholder="restaurant's location" name="location">
+    </div>
+    <div>
+        <label>Phone: </label>
+        <input type="text" placeholder="restaurant's phone" name="phone">
+    </div>
+    <div>
+        <label>Google map url: </label>
+        <input type="text" placeholder="restaurant's google_map url" name="google_map">
+    </div>
+    <div>
+        <label>Rating: </label>
+       <input type="number" placeholder="restaurant's rating" name="rating">
+    </div>
+    <div>
+        <label>Description: </label>
+        <textarea name="description" placeholder="restaurant's description"></textarea>
+    </div>
+    
+    <button type="submit">Create</button>
+    <a href="/restaurants">back</a>
+</form>

@@ -1,8 +1,11 @@
 const express = require("express");
 const { engine } = require("express-handlebars");
+const db = require("./models");
+const { Op } = require("sequelize");
+
 const app = express();
 const port = 3000;
-const restaurants = require("./public/data/restaurant.json").results;
+const Restaurant = db.restaurant;
 
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
@@ -14,32 +17,59 @@ app.get("/", (req, res) => {
 });
 
 app.get("/restaurants", (req, res) => {
-  res.render("index", { restaurants: restaurants, keyword: "" });
+  return Restaurant.findAll({
+    raw: true,
+  })
+    .then((restaurants) => {
+      res.render("index", { restaurants: restaurants, keyword: "" });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.get("/search", (req, res) => {
   const keyword = req.query.keyword?.trim();
-  let results;
-  if (keyword === "") {
-    results = restaurants;
-  } else {
-    const key = keyword.toLowerCase();
-    results = restaurants.filter((result) =>
-      Object.values(result).some((r) => {
-        if (typeof r === "string") {
-          return r.toLowerCase().includes(key);
-        }
-        return false;
-      })
-    );
-  }
-  res.render("index", { restaurants: results, keyword: keyword });
+  return Restaurant.findAll({
+    raw: true,
+    where: {
+      [Op.or]: {
+        name: {
+          [Op.like]: [`%${keyword}%`],
+        },
+        name_en: {
+          [Op.like]: [`%${keyword}%`],
+        },
+        category: {
+          [Op.like]: [`%${keyword}%`],
+        },
+        location: {
+          [Op.like]: [`%${keyword}%`],
+        },
+        description: {
+          [Op.like]: [`%${keyword}%`],
+        },
+      },
+    },
+  })
+    .then((restaurants) => {
+      res.render("index", { restaurants: restaurants, keyword: keyword });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.get("/restaurants/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const restaurant = restaurants.find((r) => r.id === id);
-  res.render("show", { restaurant });
+  return Restaurant.findByPk(Number(req.params.id), {
+    raw: true,
+  })
+    .then((restaurant) => {
+      res.render("show", { restaurant });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.listen(port, () => {

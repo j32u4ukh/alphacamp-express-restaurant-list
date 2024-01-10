@@ -40,8 +40,24 @@ app.get("/restaurants/add", (req, res) => {
 });
 
 app.post("/restaurants/add", (req, res) => {
-  res.send(`data: ${JSON.stringify(req.body)}`);
-  // TODO: redirect to /restaurants
+  const BODY = req.body;
+  return Restaurant.create({
+    name: BODY.name,
+    name_en: BODY.name_en,
+    category: BODY.category,
+    image: BODY.image,
+    location: BODY.location,
+    phone: BODY.phone,
+    google_map: BODY.google_map,
+    rating: Number(BODY.rating),
+    description: BODY.description,
+  })
+    .then(() => {
+      res.redirect("/restaurants");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.get("/restaurants/:id/edit", (req, res) => {
@@ -57,8 +73,28 @@ app.get("/restaurants/:id/edit", (req, res) => {
 });
 
 app.put("/restaurants/:id/edit", (req, res) => {
-  res.send(`id: ${req.params.id}, data: ${JSON.stringify(req.body)}`);
-  // TODO: redirect to /restaurants
+  const BODY = req.body;
+  const id = req.params.id;
+  return Restaurant.update(
+    {
+      name: BODY.name,
+      name_en: BODY.name_en,
+      category: BODY.category,
+      image: BODY.image,
+      location: BODY.location,
+      phone: BODY.phone,
+      google_map: BODY.google_map,
+      rating: Number(BODY.rating),
+      description: BODY.description,
+    },
+    { where: { id } }
+  )
+    .then(() => {
+      res.redirect("/restaurants");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.get("/search", (req, res) => {
@@ -106,8 +142,10 @@ app.get("/restaurants/:id", (req, res) => {
 });
 
 app.delete("/restaurants/:id", (req, res) => {
-  res.send(`Delete restaurant id: ${req.params.id}`);
-  // TODO: redirect to /restaurants
+  const id = req.params.id;
+  return Restaurant.destroy({ where: { id } }).then(() => {
+    res.redirect("/restaurants");
+  });
 });
 
 app.listen(port, () => {

@@ -41,6 +41,11 @@ app.get("/restaurants/add", (req, res) => {
 
 app.post("/restaurants/add", (req, res) => {
   const BODY = req.body;
+
+  if (typeof BODY.name === "undefined" || BODY.name === "") {
+    return res.status(400).send("Invalid or missing 'name' field.");
+  }
+
   return Restaurant.create({
     name: BODY.name,
     name_en: BODY.name_en,
@@ -75,6 +80,11 @@ app.get("/restaurants/:id/edit", (req, res) => {
 app.put("/restaurants/:id/edit", (req, res) => {
   const BODY = req.body;
   const id = req.params.id;
+
+  if (typeof BODY.name === "undefined" || BODY.name === "") {
+    return res.status(400).send("Invalid or missing 'name' field");
+  }
+
   return Restaurant.update(
     {
       name: BODY.name,

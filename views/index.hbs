@@ -15,20 +15,31 @@
   <div class="banner"></div>
 </header>
 
-<!-- search bar -->
-<div class="container search-bar">
-  <div class="search-bar-outer">
-    <div class="search-bar-inner">
-      <form action="/restaurants/search">
-        <h4 class="mb-2">尋找餐廳：</h4>
-        <div class="input-group">
-          <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..." value="{{keyword}}" aria-describedby="search-button">
-          <div class="input-group-append">
-            <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+<div class="container">
+  <div class="serch_and_sort d-flex justify-content-between">
+    <!-- search bar -->
+    <div class="search-bar w-25">
+      <div class="search-bar-outer">
+      <div class="search-bar-inner">
+        <form action="/restaurants/search">
+          <h4 class="mb-2">尋找餐廳：</h4>
+          <div class="input-group">
+            <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..." value="{{keyword}}" aria-describedby="search-button">
+            <div class="input-group-append">
+              <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
+    </div>
+    <!-- sorting -->
+    <select class="form-select w-25" aria-label="Kind of sorting" id="sorting">
+      <option value="0">A &rarr; Z</option>
+      <option value="1">Z &rarr; A</option>
+      <option value="2">類別</option>
+      <option value="3">地區</option>
+    </select>
   </div>
 </div>
 
@@ -36,11 +47,11 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
-      <div class="row row-cols-sm-3">
+      <div class="row row-cols-sm-3 cards">
         {{#if restaurants}}
           {{#each restaurants as |restaurant|}}
           {{!-- <a href="/restaurants/{{restaurant.id}}" class="text-secondary"></a> --}}
-          <div class="card mb-3 p-3">
+          <div class="card mb-3 p-3" data-location="{{restaurant.location}}">
             <img class="card-img-top" src="{{restaurant.image}}" alt="{{restaurant.name}}">
             <div class="card-body p-3">
               <h6 class="card-title mb-1">{{restaurant.name}}</h6>
@@ -66,3 +77,93 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  const cards = document.querySelector(".cards")
+  const selector = document.querySelector('#sorting')
+  selector.selectedIndex = 0
+  selector.addEventListener('change', function onSortingChanged(event){
+    const cardList = document.querySelectorAll('.card')
+    let cardArray = Array.from(cardList)
+    let sortFunc = function(a, b){
+      return 0;
+    }
+    switch(selector.selectedIndex){
+      case 0:
+        sortFunc = (a, b) => {
+          const nameA = getRestaurantName(a.innerHTML)
+          const nameB = getRestaurantName(b.innerHTML)
+          return nameA.localeCompare(nameB);
+        }
+        break;
+      case 1:
+        sortFunc = (a, b) => {
+          const nameA = getRestaurantName(a.innerHTML)
+          const nameB = getRestaurantName(b.innerHTML)
+          return nameB.localeCompare(nameA);
+        } 
+        break;     
+      case 2:
+        sortFunc = (a, b) => {
+          const nameA = getRestaurantCategory(a.innerHTML)
+          const nameB = getRestaurantCategory(b.innerHTML)
+          return nameA.localeCompare(nameB);
+        }
+        break;
+      case 3:
+        sortFunc = (a, b) => {
+          const nameA = getRestaurantLocation(a)
+          const nameB = getRestaurantLocation(b)
+          return nameA.localeCompare(nameB);
+        }
+        break;
+    }
+    if(sortFunc !== null){ 
+      cardArray = cardArray.sort(sortFunc)      
+      cards.innerHTML = ''
+      cardArray.forEach((card)=>{
+        cards.appendChild(card)
+      })
+    }
+  })
+  
+  // 取得餐廳名稱
+  function getRestaurantName(content){
+    const front = '<h6 class="card-title mb-1">'
+    const back = '</h6>'
+    let startIndex = content.indexOf(front)
+    if(startIndex === -1){
+      return ""
+    }
+    startIndex += front.length
+    let endIndex = content.slice(startIndex).indexOf(back)
+    if(endIndex === -1){
+      return ""
+    }
+    endIndex += startIndex
+    return content.substring(startIndex, endIndex).trim()
+  }
+  
+  // 取得類別名稱
+  function getRestaurantCategory(content){
+    const front = '<i class="fas fa-utensils pr-2"></i>'
+    const back = '</div>'
+    let startIndex = content.indexOf(front)
+    if(startIndex === -1){
+      return ""
+    }
+    startIndex += front.length
+    let endIndex = content.slice(startIndex).indexOf(back)
+    if(endIndex === -1){
+      return ""
+    }
+    endIndex += startIndex
+    return content.substring(startIndex, endIndex).trim()
+  }
+  
+  // 取得地區名稱
+  function getRestaurantLocation(content){
+    let location = content.dataset.location
+    return location
+  }
+</script>

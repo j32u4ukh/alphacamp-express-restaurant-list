@@ -4,11 +4,18 @@ const db = require("../models");
 const { Op } = require("sequelize");
 const Restaurant = db.restaurant;
 
+function sortByName(a, b) {
+  const nameA = a.name;
+  const nameB = b.name;
+  return nameA.localeCompare(nameB);
+}
+
 router.get("/", (req, res) => {
   return Restaurant.findAll({
     raw: true,
   })
     .then((restaurants) => {
+      restaurants = Array.from(restaurants).sort(sortByName);
       res.render("index", { restaurants: restaurants, keyword: "" });
     })
     .catch((error) => {

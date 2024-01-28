@@ -8,7 +8,10 @@ if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
 }
 
+const passport = require("./config/passport");
+
 // 載入中間件
+const logoutHandler = require("./middlewares/logout-handler");
 const messageHandler = require("./middlewares/message-handler");
 const errorHandler = require("./middlewares/error-handler");
 
@@ -39,6 +42,12 @@ app.use(
   })
 );
 app.use(flash());
+
+// 登入驗證
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(logoutHandler);
 
 // 訊息處理
 app.use(messageHandler);

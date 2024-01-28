@@ -37,6 +37,7 @@ router.post("/add", (req, res, next) => {
     });
     return;
   }
+  const userId = req.user.id;
 
   return Restaurant.create({
     name: BODY.name,
@@ -48,6 +49,7 @@ router.post("/add", (req, res, next) => {
     google_map: BODY.google_map,
     rating: Number(BODY.rating),
     description: BODY.description,
+    userId: userId,
   })
     .then(() => {
       res.redirect("/restaurants");

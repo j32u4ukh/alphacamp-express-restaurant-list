@@ -35,17 +35,38 @@ Alphacamp 【指標作業】打造餐廳清單
 $ git clone https://github.com/j32u4ukh/alphacamp-express-restaurant-list.git
 ```
 
-### 安裝 npm 套件
-
-```
-$ cd alphacamp-express-restaurant-list
-$ npm install
-```
-
 ## 運行專案
+
+### VS code 設置環境變數
+```
+$env:NODE_ENV="development"
+```
 
 `dev` 使用 nodemon 來執行專案，修改程式碼之後無須重啟程式，重新整理網頁即可。
 
 ```
 $ npm run dev
+```
+
+### 安裝 npm 套件
+
+#### 安裝 package-lock.json 內的套件
+```
+$ cd alphacamp-express-restaurant-list
+$ npm install
+```
+
+#### 開發時安裝
+
+```
+connect-flash@0.1.1
+dotenv@16.0.3
+express@4.18.2
+express-handlebars@7.1.2
+express-session@1.17.3
+method-override@3.0.0
+mysql2@3.2.0
+nodemon@3.0.2
+sequelize@6.30.0
+sequelize-cli@6.6.0
 ```

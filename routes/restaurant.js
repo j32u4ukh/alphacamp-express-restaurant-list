@@ -27,11 +27,15 @@ router.get("/add", (req, res) => {
   res.render("add");
 });
 
-router.post("/add", (req, res) => {
+router.post("/add", (req, res, next) => {
   const BODY = req.body;
 
   if (typeof BODY.name === "undefined" || BODY.name === "") {
-    return res.status(400).send("Invalid or missing 'name' field.");
+    next({
+      redirect: "http://localhost:3000/restaurants",
+      errorMessage: "Invalid or missing 'name' field.",
+    });
+    return;
   }
 
   return Restaurant.create({
@@ -49,7 +53,10 @@ router.post("/add", (req, res) => {
       res.redirect("/restaurants");
     })
     .catch((error) => {
-      console.log(error);
+      error.redirect = "http://localhost:3000/restaurants";
+      error.errorMessage = "新增餐廳數據時發生錯誤";
+      next(error);
+      return;
     });
 });
 
@@ -65,12 +72,16 @@ router.get("/:id/edit", (req, res) => {
     });
 });
 
-router.put("/:id/edit", (req, res) => {
+router.put("/:id/edit", (req, res, next) => {
   const BODY = req.body;
   const id = req.params.id;
 
   if (typeof BODY.name === "undefined" || BODY.name === "") {
-    return res.status(400).send("Invalid or missing 'name' field");
+    next({
+      redirect: "http://localhost:3000/restaurants",
+      errorMessage: "Invalid or missing 'name' field.",
+    });
+    return;
   }
 
   return Restaurant.update(
@@ -88,6 +99,7 @@ router.put("/:id/edit", (req, res) => {
     { where: { id } }
   )
     .then(() => {
+      req.flash("success", "更新成功!");
       res.redirect("/restaurants");
     })
     .catch((error) => {

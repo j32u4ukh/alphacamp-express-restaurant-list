@@ -16,7 +16,10 @@
       <a class="navbar-brand" href="/">餐廳清單</a>
       
       {{#if logined}}
-      <form action="/logout", method="POST">
+      <form action="/logout" method="POST" class="d-flex flex-row align-items-center">
+        <div class="me-5">
+          <label style="color:aliceblue;">{{user_email}}</label>
+        </div>
         <button type="submit" class="btn btn-info">Logout</button>
       </form>
       {{/if}}

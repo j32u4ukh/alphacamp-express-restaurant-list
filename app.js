@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "development") {
 const passport = require("./config/passport");
 
 // 載入中間件
-const logoutHandler = require("./middlewares/logout-handler");
+const loginedHandler = require("./middlewares/logined-handler");
 const messageHandler = require("./middlewares/message-handler");
 const errorHandler = require("./middlewares/error-handler");
 
@@ -47,7 +47,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(logoutHandler);
+app.use(loginedHandler);
 
 // 訊息處理
 app.use(messageHandler);

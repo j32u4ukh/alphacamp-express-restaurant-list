@@ -80,7 +80,7 @@ passport.serializeUser((user, done) => {
 // 設定 deserializeUser 用來從已序列化的使用者資料中還原原始的使用者物件，這個步驟可以讓我們在後續的驗證和使用中，不用透過 session 物件，也可以輕鬆提取使用者的相關資訊。
 // 在使用 passport 進行驗證時，序列化（serialize）用於將使用者物件轉換成可儲存的格式（例如 session），而反序列化則是將儲存的格式轉換回原始的使用者物件。
 passport.deserializeUser((user, done) => {
-  done(null, { id: user.id });
+  done(null, { id: user.id, email: user.email });
 });
 
 module.exports = passport;

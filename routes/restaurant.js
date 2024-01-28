@@ -11,7 +11,9 @@ function sortByName(a, b) {
 }
 
 router.get("/", (req, res) => {
+  const userId = req.user.id;
   return Restaurant.findAll({
+    where: { userId },
     raw: true,
   })
     .then((restaurants) => {
@@ -62,11 +64,27 @@ router.post("/add", (req, res, next) => {
     });
 });
 
-router.get("/:id/edit", (req, res) => {
+router.get("/:id/edit", (req, res, next) => {
+  const userId = req.user.id;
+
   return Restaurant.findByPk(Number(req.params.id), {
     raw: true,
   })
     .then((restaurant) => {
+      if (!restaurant) {
+        next({
+          redirect: "/restaurants",
+          errorMessage: "資料不存在",
+        });
+        return;
+      }
+      if (restaurant.userId !== userId) {
+        next({
+          redirect: "/restaurants",
+          errorMessage: "權限不足",
+        });
+        return;
+      }
       res.render("edit", { restaurant });
     })
     .catch((error) => {
@@ -77,6 +95,7 @@ router.get("/:id/edit", (req, res) => {
 router.put("/:id/edit", (req, res, next) => {
   const BODY = req.body;
   const id = req.params.id;
+  const userId = req.user.id;
 
   if (typeof BODY.name === "undefined" || BODY.name === "") {
     next({
@@ -98,7 +117,7 @@ router.put("/:id/edit", (req, res, next) => {
       rating: Number(BODY.rating),
       description: BODY.description,
     },
-    { where: { id } }
+    { where: { id, userId } }
   )
     .then(() => {
       req.flash("success", "更新成功!");
@@ -110,10 +129,12 @@ router.put("/:id/edit", (req, res, next) => {
 });
 
 router.get("/search", (req, res) => {
+  const userId = req.user.id;
   const keyword = req.query.keyword?.trim();
   return Restaurant.findAll({
     raw: true,
     where: {
+      userId,
       [Op.or]: {
         name: {
           [Op.like]: [`%${keyword}%`],
@@ -142,10 +163,25 @@ router.get("/search", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
+  const userId = req.user.id;
   return Restaurant.findByPk(Number(req.params.id), {
     raw: true,
   })
     .then((restaurant) => {
+      if (!restaurant) {
+        next({
+          redirect: "/restaurants",
+          errorMessage: "資料不存在",
+        });
+        return;
+      }
+      if (restaurant.userId !== userId) {
+        next({
+          redirect: "/restaurants",
+          errorMessage: "權限不足",
+        });
+        return;
+      }
       res.render("show", { restaurant });
     })
     .catch((error) => {
@@ -154,8 +190,9 @@ router.get("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
+  const userId = req.user.id;
   const id = req.params.id;
-  return Restaurant.destroy({ where: { id } }).then(() => {
+  return Restaurant.destroy({ where: { id, userId } }).then(() => {
     res.redirect("/restaurants");
   });
 });

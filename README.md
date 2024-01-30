@@ -24,10 +24,9 @@ Alphacamp 【指標作業】打造餐廳清單
 * 使用者可以刪除一家餐廳
 * 使用者可以選擇餐廳排序規則
 
+## 運行專案
 
-## 環境初始化
-
-### 取得專案
+### 1. 取得專案(首次執行才需要)
 
 透過 HTTPS 取得專案
 
@@ -35,44 +34,67 @@ Alphacamp 【指標作業】打造餐廳清單
 $ git clone https://github.com/j32u4ukh/alphacamp-express-restaurant-list.git
 ```
 
-## 運行專案
+### 2. 安裝依賴套件(首次執行才需要)
 
-### VS code 設置環境變數
+確保當前路徑為專案資料夾下，指令將安裝 package-lock.json 內的套件
+
+```
+npm install
+```
+
+### 3. VS code 設置環境變數
 ```
 $env:NODE_ENV="development"
 ```
 
 `dev` 使用 nodemon 來執行專案，修改程式碼之後無須重啟程式，重新整理網頁即可。
 
-```
-$ npm run dev
-```
-
-### 安裝 npm 套件
-
-#### 安裝 package-lock.json 內的套件
-```
-$ cd alphacamp-express-restaurant-list
-$ npm install
-```
-
-#### 開發時安裝
+### 4. 生成資料庫表格(首次執行才需要)
 
 ```
-bcryptjs@2.4.3
+npx sequelize db:migrate
+```
+
+### 5. 寫入資料庫初始數據(首次執行才需要)
+
+```
+npx sequelize db:seed:all
+```
+
+### 6. 專案啟動
+
+```
+npm run dev
+```
+
+## 依賴 npm 套件
+
+### 資料庫相關
+```
+mysql2@3.2.0
+sequelize@6.30.0
+sequelize-cli@6.6.0
+```
+
+### 登入驗證相關
+
+```
+bcryptjs@2.4.3 // 加密密碼
+passport@0.6.0
+passport-facebook@3.0.0
+passport-local@1.0.0
+```
+
+### 其他
+
+```
 connect-flash@0.1.1
 dotenv@16.0.3
 express@4.18.2
 express-handlebars@7.1.2
 express-session@1.17.3
 method-override@3.0.0
-mysql2@3.2.0
 nodemon@3.0.2
-passport@0.6.0
-passport-facebook@3.0.0
-passport-local@1.0.0
-sequelize@6.30.0
-sequelize-cli@6.6.0
 ```
 
 ## sequelize-cli

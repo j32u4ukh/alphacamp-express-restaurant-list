@@ -42,13 +42,12 @@ $ git clone https://github.com/j32u4ukh/alphacamp-express-restaurant-list.git
 npm install
 ```
 
-### 3. VS code 設置環境變數
+### 3. 設置環境變數
+
+VS code in Windows
 ```
 $env:NODE_ENV="development"
 ```
-
-`dev` 使用 nodemon 來執行專案，修改程式碼之後無須重啟程式，重新整理網頁即可。
-
 
 ### 4. 設置 .env
 

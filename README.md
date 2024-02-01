@@ -49,19 +49,33 @@ $env:NODE_ENV="development"
 
 `dev` 使用 nodemon 來執行專案，修改程式碼之後無須重啟程式，重新整理網頁即可。
 
-### 4. 生成資料庫表格(首次執行才需要)
+
+### 4. 設置 .env
+
+複製一份 .env.example，命名為 .env，填入自己的參數
+
+```
+SESSION_SECRET=XXX
+FACEBOOK_CLIENT_ID=XXX
+FACEBOOK_CLIENT_SECRET=XXX
+FACEBOOK_CALLBACK_URL=http://localhost:3000/oauth2/redirect/facebook
+```
+
+### 5. 生成資料庫表格(首次執行才需要)
+
+須確保資料庫 alphacamp 存在
 
 ```
 npx sequelize db:migrate
 ```
 
-### 5. 寫入資料庫初始數據(首次執行才需要)
+### 6. 寫入資料庫初始數據(首次執行才需要)
 
 ```
 npx sequelize db:seed:all
 ```
 
-### 6. 專案啟動
+### 7. 專案啟動
 
 ```
 npm run dev

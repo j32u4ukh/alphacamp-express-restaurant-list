@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      restaurant.belongsTo(models.User, {
+      restaurant.belongsTo(models.user, {
         // foreignKey 預設使用 belongsTo 表格名稱 + id
         foreignKey: "userId",
       });

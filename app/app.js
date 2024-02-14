@@ -4,7 +4,7 @@ const methodOverride = require("method-override");
 const flash = require("connect-flash");
 const session = require("express-session");
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
   require("dotenv").config();
 }
 
@@ -47,6 +47,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// 已登入中間件
 app.use(loginedHandler);
 
 // 訊息處理

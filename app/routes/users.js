@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("../models");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
-const User = db.User;
+const User = db.user;
 
 router.post("/", async (req, res, next) => {
   const { email, name, password, confirm } = req.body;
